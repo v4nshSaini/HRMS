@@ -6,7 +6,7 @@ async function bootstrap() {
 
   // ✅ CORS CONFIG (IMPORTANT)
   app.enableCors({
-    origin: 'http://localhost:3000', // 👈 your frontend URL
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'hr-frontendd.vercel.app'] // 👈 your frontend URL
     credentials: true,
   });
 
