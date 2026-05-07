@@ -8,36 +8,77 @@ datasource db {
 }
 
 model Employee {
-  id                   Int      @id @default(autoincrement())
-  firstName            String
-  middleName           String?
-  lastName             String
-  email                String   @unique
-  phone                String?
-  dob                  DateTime?
-  currentAddress       String?
-  permanentAddress     String?
-  maritalStatus        String?
-  bloodGroup           String?
-  physicallyHandicapped Boolean @default(false)
-  nationality          String?
-  role                 String?
-  password             String
+  id        Int    @id @default(autoincrement())
+  firstName String
+  middleName String?
+  lastName  String
+  email     String @unique
+  password  String
+
+  phone     String?
+  dob       DateTime?
+  currentAddress   String?
+  permanentAddress String?
+
+  jobTitle        String?
+  salary          Float?
+  joiningDate     DateTime?
+  employmentType  String?
+
+  employmentStatus String @default("ACTIVE")
 
   departmentId Int?
   locationId   Int?
 
-  department Department? @relation(fields: [departmentId], references: [id])
-  location   Location?   @relation(fields: [locationId], references: [id])
+  roleId Int?
+  role   Role? @relation(fields: [roleId], references: [id])
 
+  location Location? @relation(fields: [locationId], references: [id])
+
+  teamId Int?
+  team   Team? @relation(fields: [teamId], references: [id])
+  
   createdAt DateTime @default(now())
-  updatedAt DateTime?
-  status    Boolean  @default(true)
   isDeleted Boolean  @default(false)
 
   attendances Attendance[]
-  educations  Education[]     // ✅ FIXED (moved inside model)
-  experiences Experience[]    // ✅ FIXED
+  educations  Education[]
+  experiences Experience[]
+  leaves      Leave[]
+  documents Document[]
+  lifecycle EmployeeLifecycle[]
+}
+
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  employees Employee[]
+}
+
+model Location {
+  id   Int    @id @default(autoincrement())
+  name String
+  employees Employee[]
+}
+
+model Education {
+  id         Int    @id @default(autoincrement())
+  employeeId Int
+  degree     String
+  institute  String
+  year       Int
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Experience {
+  id         Int    @id @default(autoincrement())
+  employeeId Int
+  company    String
+  role       String
+  years      Float
+
+  employee Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Attendance {
@@ -47,37 +88,45 @@ model Attendance {
   checkIn    DateTime?
   checkOut   DateTime?
 
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  employee Employee @relation(fields: [employeeId], references: [id])
 }
 
-model Department {
-  id        Int        @id @default(autoincrement())
-  name      String
+model Leave {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  leaveType  String
+  startDate  DateTime
+  endDate    DateTime
+  status     String   @default("PENDING")
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Document {
+  id         Int    @id @default(autoincrement())
+  employeeId Int
+  name       String
+  fileUrl    String
+  type       String
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model EmployeeLifecycle {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  type       String   // ONBOARD, EXIT, TRANSFER
+  note       String?
+  effectiveDate DateTime
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Team {
+  id           Int    @id @default(autoincrement())
+  name         String
+  departmentId Int    // comes from external service
+
   employees Employee[]
-}
-
-model Location {
-  id        Int        @id @default(autoincrement())
-  name      String
-  employees Employee[]
-}
-
-model Education {
-  id          Int      @id @default(autoincrement())
-  employeeId  Int
-  degree      String
-  institute   String
-  year        Int
-
-  employee    Employee @relation(fields: [employeeId], references: [id])
-}
-
-model Experience {
-  id          Int      @id @default(autoincrement())
-  employeeId  Int
-  company     String
-  role        String
-  years       Float
-
-  employee    Employee @relation(fields: [employeeId], references: [id])
 }

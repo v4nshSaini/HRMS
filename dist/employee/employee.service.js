@@ -17,23 +17,25 @@ let EmployeeService = class EmployeeService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    findAll() {
+    async findAll() {
         return this.prisma.employee.findMany({
             where: { isDeleted: false },
             include: {
                 educations: true,
                 experiences: true,
                 location: true,
+                role: true,
             },
         });
     }
-    findOne(id) {
+    async findOne(id) {
         return this.prisma.employee.findUnique({
             where: { id },
             include: {
                 educations: true,
                 experiences: true,
                 location: true,
+                role: true,
             },
         });
     }

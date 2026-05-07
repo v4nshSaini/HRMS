@@ -5,7 +5,11 @@ import { AddExperienceDto } from './dto/add-experience.dto';
 export declare class EmployeeController {
     private employeeService;
     constructor(employeeService: EmployeeService);
-    findAll(): import(".prisma/client").Prisma.PrismaPromise<({
+    findAll(): Promise<({
+        role: {
+            id: number;
+            name: string;
+        } | null;
         location: {
             id: number;
             name: string;
@@ -18,14 +22,13 @@ export declare class EmployeeController {
             employeeId: number;
         }[];
         experiences: {
-            id: number;
             role: string;
+            id: number;
             employeeId: number;
             company: string;
             years: number;
         }[];
     } & {
-        id: number;
         firstName: string;
         middleName: string | null;
         lastName: string;
@@ -34,20 +37,25 @@ export declare class EmployeeController {
         dob: Date | null;
         currentAddress: string | null;
         permanentAddress: string | null;
-        maritalStatus: string | null;
-        bloodGroup: string | null;
-        physicallyHandicapped: boolean;
-        nationality: string | null;
-        role: string | null;
-        password: string;
         departmentId: number | null;
         locationId: number | null;
+        id: number;
+        password: string;
+        jobTitle: string | null;
+        salary: number | null;
+        joiningDate: Date | null;
+        employmentType: string | null;
+        employmentStatus: string;
+        roleId: number | null;
+        teamId: number | null;
         createdAt: Date;
-        updatedAt: Date | null;
-        status: boolean;
         isDeleted: boolean;
     })[]>;
-    findOne(id: string): import(".prisma/client").Prisma.Prisma__EmployeeClient<({
+    findOne(id: string): Promise<({
+        role: {
+            id: number;
+            name: string;
+        } | null;
         location: {
             id: number;
             name: string;
@@ -60,14 +68,13 @@ export declare class EmployeeController {
             employeeId: number;
         }[];
         experiences: {
-            id: number;
             role: string;
+            id: number;
             employeeId: number;
             company: string;
             years: number;
         }[];
     } & {
-        id: number;
         firstName: string;
         middleName: string | null;
         lastName: string;
@@ -76,21 +83,21 @@ export declare class EmployeeController {
         dob: Date | null;
         currentAddress: string | null;
         permanentAddress: string | null;
-        maritalStatus: string | null;
-        bloodGroup: string | null;
-        physicallyHandicapped: boolean;
-        nationality: string | null;
-        role: string | null;
-        password: string;
         departmentId: number | null;
         locationId: number | null;
+        id: number;
+        password: string;
+        jobTitle: string | null;
+        salary: number | null;
+        joiningDate: Date | null;
+        employmentType: string | null;
+        employmentStatus: string;
+        roleId: number | null;
+        teamId: number | null;
         createdAt: Date;
-        updatedAt: Date | null;
-        status: boolean;
         isDeleted: boolean;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs>;
+    }) | null>;
     update(id: string, body: UpdateEmployeeDto): import(".prisma/client").Prisma.Prisma__EmployeeClient<{
-        id: number;
         firstName: string;
         middleName: string | null;
         lastName: string;
@@ -99,21 +106,21 @@ export declare class EmployeeController {
         dob: Date | null;
         currentAddress: string | null;
         permanentAddress: string | null;
-        maritalStatus: string | null;
-        bloodGroup: string | null;
-        physicallyHandicapped: boolean;
-        nationality: string | null;
-        role: string | null;
-        password: string;
         departmentId: number | null;
         locationId: number | null;
+        id: number;
+        password: string;
+        jobTitle: string | null;
+        salary: number | null;
+        joiningDate: Date | null;
+        employmentType: string | null;
+        employmentStatus: string;
+        roleId: number | null;
+        teamId: number | null;
         createdAt: Date;
-        updatedAt: Date | null;
-        status: boolean;
         isDeleted: boolean;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     delete(id: string): import(".prisma/client").Prisma.Prisma__EmployeeClient<{
-        id: number;
         firstName: string;
         middleName: string | null;
         lastName: string;
@@ -122,17 +129,18 @@ export declare class EmployeeController {
         dob: Date | null;
         currentAddress: string | null;
         permanentAddress: string | null;
-        maritalStatus: string | null;
-        bloodGroup: string | null;
-        physicallyHandicapped: boolean;
-        nationality: string | null;
-        role: string | null;
-        password: string;
         departmentId: number | null;
         locationId: number | null;
+        id: number;
+        password: string;
+        jobTitle: string | null;
+        salary: number | null;
+        joiningDate: Date | null;
+        employmentType: string | null;
+        employmentStatus: string;
+        roleId: number | null;
+        teamId: number | null;
         createdAt: Date;
-        updatedAt: Date | null;
-        status: boolean;
         isDeleted: boolean;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     addEducation(id: string, body: AddEducationDto): Promise<{
@@ -157,22 +165,22 @@ export declare class EmployeeController {
         employeeId: number;
     }>;
     addExperience(id: string, body: AddExperienceDto): Promise<{
-        id: number;
         role: string;
+        id: number;
         employeeId: number;
         company: string;
         years: number;
     }>;
     getExperience(id: string): Promise<{
-        id: number;
         role: string;
+        id: number;
         employeeId: number;
         company: string;
         years: number;
     }[]>;
     deleteExperience(id: string): Promise<{
-        id: number;
         role: string;
+        id: number;
         employeeId: number;
         company: string;
         years: number;

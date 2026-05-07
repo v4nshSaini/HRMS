@@ -12,12 +12,17 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const employee_module_1 = require("./employee/employee.module");
 const auth_module_1 = require("./auth/auth.module");
 const attendance_module_1 = require("./attendance/attendance.module");
+const leave_module_1 = require("./leave/leave.module");
+const document_module_1 = require("./document/document.module");
+const lifecycle_module_1 = require("./lifecycle/lifecycle.module");
+const team_module_1 = require("./team/team.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, employee_module_1.EmployeeModule, auth_module_1.AuthModule, attendance_module_1.AttendanceModule],
+        imports: [prisma_module_1.PrismaModule, employee_module_1.EmployeeModule, auth_module_1.AuthModule, attendance_module_1.AttendanceModule, leave_module_1.LeaveModule, document_module_1.DocumentModule,
+            lifecycle_module_1.LifecycleModule, team_module_1.TeamModule,],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

@@ -5,16 +5,20 @@ export declare class AttendanceController {
     checkIn(id: string): Promise<{
         id: number;
         employeeId: number;
-        date: Date;
-        checkIn: Date | null;
-        checkOut: Date | null;
+        date: string;
+        checkIn: string;
+        status: string;
+        message: string;
     }>;
     checkOut(id: string): Promise<{
         id: number;
         employeeId: number;
-        date: Date;
-        checkIn: Date | null;
-        checkOut: Date | null;
+        date: string;
+        checkIn: string;
+        checkOut: string;
+        duration: string;
+        status: string;
+        message: string;
     }>;
     getEmployeeAttendance(id: string): Promise<{
         id: number;
@@ -30,21 +34,21 @@ export declare class AttendanceController {
             middleName: string | null;
             lastName: string;
             email: string;
+            password: string;
             phone: string | null;
             dob: Date | null;
             currentAddress: string | null;
             permanentAddress: string | null;
-            maritalStatus: string | null;
-            bloodGroup: string | null;
-            physicallyHandicapped: boolean;
-            nationality: string | null;
-            role: string | null;
-            password: string;
+            jobTitle: string | null;
+            salary: number | null;
+            joiningDate: Date | null;
+            employmentType: string | null;
+            employmentStatus: string;
             departmentId: number | null;
             locationId: number | null;
+            roleId: number | null;
+            teamId: number | null;
             createdAt: Date;
-            updatedAt: Date | null;
-            status: boolean;
             isDeleted: boolean;
         };
     } & {

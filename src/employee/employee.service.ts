@@ -3,28 +3,30 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class EmployeeService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   // ================= BASIC =================
-
-  findAll() {
+  async findAll() {
     return this.prisma.employee.findMany({
       where: { isDeleted: false },
       include: {
         educations: true,
         experiences: true,
         location: true,
+        role: true,
       },
     });
   }
 
-  findOne(id: number) {
+
+  async findOne(id: number) {
     return this.prisma.employee.findUnique({
       where: { id },
       include: {
         educations: true,
         experiences: true,
         location: true,
+        role: true,
       },
     });
   }

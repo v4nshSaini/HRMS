@@ -57,34 +57,35 @@ let AuthService = class AuthService {
     async register(data) {
         try {
             const hashedPassword = await bcrypt.hash(data.password, 10);
+            const { role, ...rest } = data;
+            if (role === 'ADMIN') {
+                const existingAdmin = await this.prisma.role.findFirst({
+                    where: { name: 'ADMIN' },
+                    include: { employees: true },
+                });
+                if (existingAdmin && existingAdmin.employees.length > 0) {
+                    throw new common_1.ConflictException('Admin already exists');
+                }
+            }
+            let roleData = await this.prisma.role.findUnique({
+                where: { name: role || 'EMPLOYEE' },
+            });
+            if (!roleData) {
+                roleData = await this.prisma.role.create({
+                    data: { name: role || 'EMPLOYEE' },
+                });
+            }
             const employee = await this.prisma.employee.create({
                 data: {
-                    firstName: data.firstName,
-                    middleName: data.middleName,
-                    lastName: data.lastName,
-                    email: data.email,
+                    ...rest,
                     password: hashedPassword,
-                    phone: data.phone,
-                    dob: data.dob,
-                    currentAddress: data.currentAddress,
-                    permanentAddress: data.permanentAddress,
-                    maritalStatus: data.maritalStatus,
-                    bloodGroup: data.bloodGroup,
-                    physicallyHandicapped: data.physicallyHandicapped,
-                    nationality: data.nationality,
-                    role: data.role,
-                    departmentId: data.departmentId,
-                    locationId: data.locationId,
+                    roleId: roleData.id,
                 },
+                include: { role: true },
             });
             return {
-                message: 'Employee registered successfully',
-                employee: {
-                    id: employee.id,
-                    firstName: employee.firstName,
-                    lastName: employee.lastName,
-                    email: employee.email,
-                },
+                message: `${employee.role?.name} created successfully`,
+                employee,
             };
         }
         catch (error) {
@@ -97,6 +98,7 @@ let AuthService = class AuthService {
     async login(data) {
         const employee = await this.prisma.employee.findUnique({
             where: { email: data.email },
+            include: { role: true },
         });
         if (!employee) {
             throw new common_1.UnauthorizedException('Invalid credentials');
@@ -108,17 +110,17 @@ let AuthService = class AuthService {
         const payload = {
             sub: employee.id,
             email: employee.email,
-            role: employee.role,
+            role: employee.role?.name,
         };
         const token = await this.jwtService.signAsync(payload);
         return {
-            message: 'Login successful',
             access_token: token,
             employee: {
                 id: employee.id,
                 firstName: employee.firstName,
                 lastName: employee.lastName,
                 email: employee.email,
+                role: employee.role?.name,
             },
         };
     }
